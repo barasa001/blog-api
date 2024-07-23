@@ -1,4 +1,4 @@
-FROM node:14
+FROM buildpack-deps:bookworm
 
 WORKDIR /usr/src/app
 
