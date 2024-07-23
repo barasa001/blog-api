@@ -19,17 +19,23 @@ jobs:
       with:
         node-version: '14'
 
+    - name: Navigate to backend directory
+      run: cd backend
+
     - name: Install dependencies
       run: npm install
+      working-directory: backend
 
     - name: Lint code
       run: npm run lint
+      working-directory: backend
 
     - name: Run the tests
       run: npm test
+      working-directory: backend
 
     - name: Build the Docker image
-      run: docker build -t your-dockerhub-username/backend .
+      run: docker build -t your-dockerhub-username/backend backend
 
     - name: Push Docker image to Docker Hub
       run: |
