@@ -1,0 +1,45 @@
+---
+- name: Configure Azure server
+  hosts: webserver
+  become: yes
+  tasks:
+    - name: Ensure system is up to date
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install Node.js
+      apt:
+        name: nodejs
+        state: present
+
+    - name: Install npm
+      apt:
+        name: npm
+        state: present
+
+    - name: Install PM2
+      npm:
+        name: pm2
+        global: yes
+
+    - name: Create application directory
+      file:
+        path: /var/www/devops-blog-api
+        state: directory
+        owner: azureuser
+        group: azureuser
+
+    - name: Copy application files
+      synchronize:
+        src: /home/azureuser/devops-blog-api/
+        dest: /var/www/devops-blog-api/
+        delete: yes
+
+    - name: Install application dependencies
+      command: npm install
+      args:
+        chdir: /var/www/devops-blog-api
+
+    - name: Start application with PM2
+      command: pm2 start /var/www/devops-blog-api/index.js --name devops-blog-api
