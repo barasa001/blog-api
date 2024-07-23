@@ -17,25 +17,28 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '20.x'
 
-    - name: Navigate to backend directory
-      run: cd backend
-
-    - name: Install dependencies
-      run: npm install
-      working-directory: backend
+    - name: Reinstall Node Modules
+      run: |
+        cd backend
+        rm -rf node_modules
+        npm install
 
     - name: Lint code
-      run: npm run lint
-      working-directory: backend
+      run: |
+        cd backend
+        npm run lint
 
     - name: Run the tests
-      run: npm test
-      working-directory: backend
+      run: |
+        cd backend
+        npm test
 
     - name: Build the Docker image
-      run: docker build -t your-dockerhub-username/backend backend
+      run: |
+        cd backend
+        docker build -t your-dockerhub-username/backend .
 
     - name: Push Docker image to Docker Hub
       run: |
