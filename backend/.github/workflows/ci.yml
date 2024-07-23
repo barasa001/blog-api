@@ -28,7 +28,7 @@ jobs:
     - name: Run the tests
       run: npm test
 
-    - name: Build Docker image
+    - name: Build the Docker image
       run: docker build -t your-dockerhub-username/backend .
 
     - name: Push Docker image to Docker Hub
