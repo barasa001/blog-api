@@ -1,4 +1,4 @@
-# Use an official Node.js runtime as a parent image
+# Parent image
 FROM node:20
 
 # Set the working directory
