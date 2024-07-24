@@ -44,3 +44,16 @@ jobs:
       run: |
         echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
         docker push seth001/backend:latest
+
+    - name: Deploy to Azure Server
+      uses: appleboy/ssh-action@v0.1.2
+      with:
+        host: ${{ secrets.AZURE_SERVER_IP }}
+        username: ${{ secrets.AZURE_SERVER_USERNAME }}
+        key: ${{ secrets.AZURE_SERVER_SSH_KEY }}
+        port: 22
+        script: |
+          docker pull seth001/backend:latest
+          docker stop backend || true
+          docker rm backend || true
+          docker run -d --name backend -p 80:3000 seth001/backend:latest
